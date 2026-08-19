@@ -27,21 +27,21 @@ jobs:
           mkdir -p daily-progress
           FILE="daily-progress/day-${DAY}.md"
           if [ ! -f "$FILE" ]; then
-            cat > "$FILE" <<EOF
-# Day ${DAY} — ${DATE}
-
-## 📚 What I Learned
-- Add today's topic here.
-
-## 💻 What I Practiced
-- Add today's coding/practice work here.
-
-## 🧠 Key Takeaway
-- Add the most important thing learned today.
-
-## 🚀 Next Step
-- Add tomorrow's learning goal.
-EOF
+            {
+              echo "# Day ${DAY} — ${DATE}"
+              echo ""
+              echo "## What I Learned"
+              echo "- Add today's topic here."
+              echo ""
+              echo "## What I Practiced"
+              echo "- Add today's coding/practice work here."
+              echo ""
+              echo "## Key Takeaway"
+              echo "- Add the most important thing learned today."
+              echo ""
+              echo "## Next Step"
+              echo "- Add tomorrow's learning goal."
+            } > "$FILE"
             git add daily-progress/
             git commit -m "docs: add day ${DAY} progress log" || echo "nothing to commit"
             git push
@@ -53,7 +53,7 @@ EOF
           mkdir -p daily-progress/practice
           FILE="daily-progress/practice/day-${DAY}-practice.py"
           if [ ! -f "$FILE" ]; then
-            echo "# Practice code for day ${DAY} — replace with today's exercise" > "$FILE"
+            echo "# Practice code for day ${DAY} - replace with today's exercise" > "$FILE"
             git add "$FILE"
             git commit -m "feat: add day ${DAY} practice placeholder" || echo "nothing to commit"
             git push
@@ -65,7 +65,11 @@ EOF
           mkdir -p daily-progress/notes
           FILE="daily-progress/notes/day-${DAY}-notes.md"
           if [ ! -f "$FILE" ]; then
-            echo "## Notes — Day ${DAY}\n\n- Write key concept notes here." > "$FILE"
+            {
+              echo "## Notes — Day ${DAY}"
+              echo ""
+              echo "- Write key concept notes here."
+            } > "$FILE"
             git add "$FILE"
             git commit -m "docs: add day ${DAY} notes placeholder" || echo "nothing to commit"
             git push
