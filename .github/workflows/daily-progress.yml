@@ -11,72 +11,62 @@ permissions:
 jobs:
   daily-progress:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create daily progress
-        shell: bash
+      - name: Configure git
         run: |
-          DATE=$(date -u +%Y-%m-%d)
-          mkdir -p daily-progress
-          FILE="daily-progress/${DATE}.md"
-
-          if [ ! -f "$FILE" ]; then
-            printf '%s\n' \
-              "# 🤖 AI/ML Daily Progress — ${DATE}" \
-              "" \
-              "## 📚 What I Learned" \
-              "" \
-              "- " \
-              "" \
-              "## 💻 What I Practiced" \
-              "" \
-              "- " \
-              "" \
-              "## 🧪 What I Built" \
-              "" \
-              "- " \
-              "" \
-              "## 🧠 Key Takeaway" \
-              "" \
-              "- " \
-              "" \
-              "## 🚧 Challenges" \
-              "" \
-              "- " \
-              "" \
-              "## 🚀 Next Step" \
-              "" \
-              "- " \
-              "" \
-              "---" \
-              "" \
-              "### 📌 Progress" \
-              "" \
-              "| Area | Status |" \
-              "|---|---|" \
-              "| Learning | 🔄 |" \
-              "| Practice | 🔄 |" \
-              "| Coding | 🔄 |" \
-              "| Project | 🔄 |" \
-              > "$FILE"
-          fi
-
-      - name: Commit daily progress
-        shell: bash
-        run: |
-          DATE=$(date -u +%Y-%m-%d)
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add daily-progress/
+      - name: Create daily log entry
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          DAY=$(date -u +%j)
+          mkdir -p daily-progress
+          FILE="daily-progress/day-${DAY}.md"
+          if [ ! -f "$FILE" ]; then
+            cat > "$FILE" <<EOF
+# Day ${DAY} — ${DATE}
 
-          if git diff --cached --quiet; then
-            echo "No new progress entry."
-          else
-            git commit -m "docs: daily AI/ML progress ${DATE}"
+## 📚 What I Learned
+- Add today's topic here.
+
+## 💻 What I Practiced
+- Add today's coding/practice work here.
+
+## 🧠 Key Takeaway
+- Add the most important thing learned today.
+
+## 🚀 Next Step
+- Add tomorrow's learning goal.
+EOF
+            git add daily-progress/
+            git commit -m "docs: add day ${DAY} progress log" || echo "nothing to commit"
+            git push
+          fi
+
+      - name: Create practice snippet placeholder
+        run: |
+          DAY=$(date -u +%j)
+          mkdir -p daily-progress/practice
+          FILE="daily-progress/practice/day-${DAY}-practice.py"
+          if [ ! -f "$FILE" ]; then
+            echo "# Practice code for day ${DAY} — replace with today's exercise" > "$FILE"
+            git add "$FILE"
+            git commit -m "feat: add day ${DAY} practice placeholder" || echo "nothing to commit"
+            git push
+          fi
+
+      - name: Create notes placeholder
+        run: |
+          DAY=$(date -u +%j)
+          mkdir -p daily-progress/notes
+          FILE="daily-progress/notes/day-${DAY}-notes.md"
+          if [ ! -f "$FILE" ]; then
+            echo "## Notes — Day ${DAY}\n\n- Write key concept notes here." > "$FILE"
+            git add "$FILE"
+            git commit -m "docs: add day ${DAY} notes placeholder" || echo "nothing to commit"
             git push
           fi
