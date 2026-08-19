@@ -1,0 +1,65 @@
+name: Daily AI/ML Progress
+
+on:
+  schedule:
+    - cron: "30 18 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  daily-progress:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create daily progress
+        shell: bash
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          DAY=$(date -u +%j)
+          mkdir -p daily-progress
+          FILE="daily-progress/day-${DAY}.md"
+          if [ ! -f "$FILE" ]; then
+            cat > "$FILE" <<EOF
+# Day ${DAY} — ${DATE}
+
+## 📚 What I Learned
+
+- Add today's topic here.
+
+## 💻 What I Practiced
+
+- Add today's coding/practice work here.
+
+## 🧠 Key Takeaway
+
+- Add the most important thing learned today.
+
+## 🚀 Next Step
+
+- Add tomorrow's learning goal.
+
+---
+
+### 📌 Progress
+
+**Learning:** 🔄  
+**Practice:** 🔄  
+**Project:** 🔄
+EOF
+          fi
+
+      - name: Commit daily progress
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add daily-progress/
+          if git diff --cached --quiet; then
+            echo "No new progress entry."
+          else
+            git commit -m "docs: add daily AI/ML progress"
+            git push
+          fi
