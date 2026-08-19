@@ -74,7 +74,10 @@ EOF
           fi
 
       - name: Commit daily progress
+        shell: bash
         run: |
+
+          DATE=$(date -u +%Y-%m-%d)
 
           git config user.name "github-actions[bot]"
 
