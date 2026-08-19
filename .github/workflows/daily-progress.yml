@@ -2,9 +2,7 @@ name: Daily AI/ML Progress
 
 on:
   schedule:
-    # Every day at 12:00 AM IST
     - cron: "30 18 * * *"
-
   workflow_dispatch:
 
 permissions:
@@ -12,89 +10,73 @@ permissions:
 
 jobs:
   daily-progress:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Create daily progress
         shell: bash
         run: |
-
           DATE=$(date -u +%Y-%m-%d)
-
           mkdir -p daily-progress
-
           FILE="daily-progress/${DATE}.md"
 
           if [ ! -f "$FILE" ]; then
-
-            cat > "$FILE" <<EOF
-# 🤖 AI/ML Daily Progress — ${DATE}
-
-## 📚 What I Learned
-
-- 
-
-## 💻 What I Practiced
-
-- 
-
-## 🧪 What I Built
-
-- 
-
-## 🧠 Key Takeaway
-
-- 
-
-## 🚧 Challenges
-
-- 
-
-## 🚀 Next Step
-
-- 
-
----
-
-### 📌 Progress
-
-| Area | Status |
-|---|---|
-| Learning | 🔄 |
-| Practice | 🔄 |
-| Coding | 🔄 |
-| Project | 🔄 |
-EOF
-
+            printf '%s\n' \
+              "# 🤖 AI/ML Daily Progress — ${DATE}" \
+              "" \
+              "## 📚 What I Learned" \
+              "" \
+              "- " \
+              "" \
+              "## 💻 What I Practiced" \
+              "" \
+              "- " \
+              "" \
+              "## 🧪 What I Built" \
+              "" \
+              "- " \
+              "" \
+              "## 🧠 Key Takeaway" \
+              "" \
+              "- " \
+              "" \
+              "## 🚧 Challenges" \
+              "" \
+              "- " \
+              "" \
+              "## 🚀 Next Step" \
+              "" \
+              "- " \
+              "" \
+              "---" \
+              "" \
+              "### 📌 Progress" \
+              "" \
+              "| Area | Status |" \
+              "|---|---|" \
+              "| Learning | 🔄 |" \
+              "| Practice | 🔄 |" \
+              "| Coding | 🔄 |" \
+              "| Project | 🔄 |" \
+              > "$FILE"
           fi
 
       - name: Commit daily progress
         shell: bash
         run: |
-
           DATE=$(date -u +%Y-%m-%d)
 
           git config user.name "github-actions[bot]"
-
-          git config user.email \
-            "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add daily-progress/
 
           if git diff --cached --quiet; then
-
             echo "No new progress entry."
-
           else
-
-            git commit \
-              -m "docs: daily AI/ML progress ${DATE}"
-
+            git commit -m "docs: daily AI/ML progress ${DATE}"
             git push
-
           fi
