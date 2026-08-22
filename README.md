@@ -1,4 +1,4 @@
-﻿# 🤖 AI/ML Daily Journey
+﻿#  AI/ML Daily Journey
 
 > My daily journey from Machine Learning to Generative AI and Agentic AI.
 
