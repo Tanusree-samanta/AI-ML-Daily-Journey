@@ -72,6 +72,7 @@ Weekly summaries are stored inside `weekly-progress/`.
 
 GitHub Actions automatically creates a daily learning-log template.
 
+
 ---
 
 ## 📈 Consistency
