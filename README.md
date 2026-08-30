@@ -76,6 +76,7 @@ GitHub Actions automatically creates a daily learning-log template.
 
 ---
 
+
 ## 📈 Consistency
 
 **Learn → Build → Document → Repeat**
