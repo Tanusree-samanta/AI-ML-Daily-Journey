@@ -45,6 +45,7 @@ Build strong practical skills in:
 | Agentic AI       | ⏳ Upcoming  |
 | MLOps            | ⏳ Upcoming  |
 
+
 ---
 
 ## 📅 Daily Progress
