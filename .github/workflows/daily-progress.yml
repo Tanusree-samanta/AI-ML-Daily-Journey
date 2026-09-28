@@ -11,6 +11,7 @@ permissions:
 jobs:
   daily-progress:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,8 +25,11 @@ jobs:
         run: |
           DATE=$(date -u +%Y-%m-%d)
           DAY=$(date -u +%j)
+
           mkdir -p daily-progress
+
           FILE="daily-progress/day-${DAY}.md"
+
           if [ ! -f "$FILE" ]; then
             {
               echo "# Day ${DAY} — ${DATE}"
@@ -42,6 +46,7 @@ jobs:
               echo "## Next Step"
               echo "- Add tomorrow's learning goal."
             } > "$FILE"
+
             git add daily-progress/
             git commit -m "docs: add day ${DAY} progress log" || echo "nothing to commit"
             git push
@@ -50,10 +55,14 @@ jobs:
       - name: Create practice snippet placeholder
         run: |
           DAY=$(date -u +%j)
+
           mkdir -p daily-progress/practice
+
           FILE="daily-progress/practice/day-${DAY}-practice.py"
+
           if [ ! -f "$FILE" ]; then
             echo "# Practice code for day ${DAY} - replace with today's exercise" > "$FILE"
+
             git add "$FILE"
             git commit -m "feat: add day ${DAY} practice placeholder" || echo "nothing to commit"
             git push
@@ -62,14 +71,18 @@ jobs:
       - name: Create notes placeholder
         run: |
           DAY=$(date -u +%j)
+
           mkdir -p daily-progress/notes
+
           FILE="daily-progress/notes/day-${DAY}-notes.md"
+
           if [ ! -f "$FILE" ]; then
             {
               echo "## Notes — Day ${DAY}"
               echo ""
               echo "- Write key concept notes here."
             } > "$FILE"
+
             git add "$FILE"
             git commit -m "docs: add day ${DAY} notes placeholder" || echo "nothing to commit"
             git push
