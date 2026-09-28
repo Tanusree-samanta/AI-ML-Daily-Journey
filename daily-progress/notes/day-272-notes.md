@@ -1,0 +1,31 @@
+# AI/ML Notes — Day 272
+
+Date: 2026-09-29
+
+## Topic
+
+Write today's topic here.
+
+## Important Concepts
+
+- Concept 1
+- Concept 2
+- Concept 3
+
+## Example
+
+Add an example here.
+
+## Key Points
+
+- Point 1
+- Point 2
+- Point 3
+
+## Questions / Doubts
+
+- Add questions here.
+
+## Revision
+
+- Review today's topic.
