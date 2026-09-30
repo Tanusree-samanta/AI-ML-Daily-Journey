@@ -2,7 +2,8 @@ name: Daily AI/ML Progress
 
 on:
   schedule:
-    - cron: "30 18 * * *"
+    # 8:00 PM IST = 2:30 PM UTC
+    - cron: "30 14 * * *"
   workflow_dispatch:
 
 permissions:
@@ -20,7 +21,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-
       # ==========================================
       # CONFIGURE GIT
       # ==========================================
@@ -29,7 +29,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "216425985+Tanusree-samanta@users.noreply.github.com"
 
-
       # ==========================================
       # COMMIT 1 — DAILY PROGRESS
       # ==========================================
@@ -37,16 +36,15 @@ jobs:
         run: |
 
           DATE=$(TZ=Asia/Kolkata date +%Y-%m-%d)
-          DAY=$(TZ=Asia/Kolkata date +%j)
 
           mkdir -p daily-progress
 
-          FILE="daily-progress/day-${DAY}.md"
+          FILE="daily-progress/day-${DATE}.md"
 
           if [ ! -f "$FILE" ]; then
 
             printf '%s\n' \
-              "# Day ${DAY} — ${DATE}" \
+              "# Daily AI/ML Progress — ${DATE}" \
               "" \
               "## What I Learned" \
               "" \
@@ -66,13 +64,12 @@ jobs:
               > "$FILE"
 
             git add "$FILE"
-            git commit -m "docs: add day ${DAY} progress log"
+            git commit -m "docs: add daily progress for ${DATE}"
             git push
 
           else
             echo "Daily progress file already exists."
           fi
-
 
       # ==========================================
       # COMMIT 2 — PRACTICE CODE
@@ -80,33 +77,32 @@ jobs:
       - name: Commit 2 - Practice code
         run: |
 
-          DAY=$(TZ=Asia/Kolkata date +%j)
+          DATE=$(TZ=Asia/Kolkata date +%Y-%m-%d)
 
           mkdir -p daily-progress/practice
 
-          FILE="daily-progress/practice/day-${DAY}-practice.py"
+          FILE="daily-progress/practice/${DATE}-practice.py"
 
           if [ ! -f "$FILE" ]; then
 
             printf '%s\n' \
               '"""' \
-              "AI/ML Practice - Day ${DAY}" \
+              "AI/ML Practice - ${DATE}" \
               "" \
               "Add today's Python / AI / ML practice here." \
               '"""' \
               "" \
               "# Example:" \
-              "# print(\"Day ${DAY} AI/ML Practice\")" \
+              "# print(\"AI/ML Practice - ${DATE}\")" \
               > "$FILE"
 
             git add "$FILE"
-            git commit -m "feat: add day ${DAY} practice"
+            git commit -m "feat: add practice for ${DATE}"
             git push
 
           else
             echo "Practice file already exists."
           fi
-
 
       # ==========================================
       # COMMIT 3 — NOTES
@@ -114,17 +110,16 @@ jobs:
       - name: Commit 3 - Notes
         run: |
 
-          DAY=$(TZ=Asia/Kolkata date +%j)
           DATE=$(TZ=Asia/Kolkata date +%Y-%m-%d)
 
           mkdir -p daily-progress/notes
 
-          FILE="daily-progress/notes/day-${DAY}-notes.md"
+          FILE="daily-progress/notes/${DATE}-notes.md"
 
           if [ ! -f "$FILE" ]; then
 
             printf '%s\n' \
-              "# AI/ML Notes — Day ${DAY}" \
+              "# AI/ML Notes — ${DATE}" \
               "" \
               "Date: ${DATE}" \
               "" \
@@ -158,7 +153,7 @@ jobs:
               > "$FILE"
 
             git add "$FILE"
-            git commit -m "docs: add day ${DAY} notes"
+            git commit -m "docs: add notes for ${DATE}"
             git push
 
           else
